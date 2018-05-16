@@ -11,11 +11,18 @@ cask 'adobe-photoshop-cs6' do
   name 'Adobe Photoshop CS6' # name must match directory in dmg for later reference
   homepage 'https://helpx.adobe.com/x-productkb/policy-pricing/cs6-product-downloads.html'
 
-  installer script: "#{staged_path}/#{name.join}/Install.app/Contents/MacOS/Install",
-            args:   ['--mode=silent', "--deploymentFile=#{staged_path}/#{name.join}/Deployment/en_US_Deployment.xml"]
+  installer script: {
+                      executable: "#{staged_path}/#{name.join}/Install.app/Contents/MacOS/Install",
+                      args:       ['--mode=silent', "--deploymentFile=#{staged_path}/#{name.join}/Deployment/en_US_Deployment.xml"],
+                      sudo:       true,
+                    }
 
   preflight do
-    system '/usr/bin/killall', '-kill', 'SafariNotificationAgent'
+    processes = system_command '/bin/launchctl', args: ['list']
+
+    if processes.stdout.lines.any? { |line| line =~ %r{^\d+\t\d\tcom.apple.SafariNotificationAgent$} }
+      system_command '/usr/bin/killall', args: ['-kill', 'SafariNotificationAgent']
+    end
   end
 
   uninstall_preflight do
@@ -26,11 +33,14 @@ cask 'adobe-photoshop-cs6' do
     uninstall_file.close
   end
 
-  uninstall signal: [%w[KILL SafariNotificationAgent]],
+  uninstall signal: ['KILL', 'SafariNotificationAgent'],
             script: {
                       executable: "#{name.join}/Install.app/Contents/MacOS/Install",
                       args:       ['--mode=silent', "--deploymentFile=#{staged_path}/#{name.join}/Deployment/en_US_Uninstall.xml"],
+                      sudo:       true,
                     }
 
-  caveats 'Installation or Uninstallation may fail with Exit Code 19 (Conflicting Processes running) if Browsers, Safari Notification Service or SIMBL Services (e.g. Flashlight) are running or Adobe Creative Cloud or any other Adobe Products are already installed. See Logs in /Library/Logs/Adobe/Installers if Installation or Uninstallation fails, to identifify the conflicting processes.'
+  caveats <<~EOS
+    Installation or Uninstallation may fail with Exit Code 19 (Conflicting Processes running) if Browsers, Safari Notification Service or SIMBL Services (e.g. Flashlight) are running or Adobe Creative Cloud or any other Adobe Products are already installed. See Logs in /Library/Logs/Adobe/Installers if Installation or Uninstallation fails, to identifify the conflicting processes.
+  EOS
 end
