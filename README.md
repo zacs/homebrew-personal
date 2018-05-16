@@ -16,5 +16,11 @@ You can now install weird and alternate Formulae and Casks.
 $ brew cask install adobe-photoshop-cs6
 ```
 
+## References
+
+Just in case the lineage of anything is needed in the future:
+
+- [`adobe-photoshop-cs6.rb`](https://github.com/caskroom/homebrew-versions/blob/00551095ec04b7bc52a349f55c9e4ffef00374b8/Casks/adobe-photoshop-cs6.rb)
+
 ## License
 Code is under the [MIT license](https://github.com/zacs/homebrew-personal/blob/master/LICENSE).
