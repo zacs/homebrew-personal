@@ -2,7 +2,7 @@ cask 'font-operator-mono' do
     version :latest
     sha256 :no_check
   
-    url "https://raw.githubusercontent.com/zacs/homebrew-personal/master/storage/font-operator-mono/OperatorMono.zip"
+    url "https://raw.githubusercontent.com/zacs/homebrew-personal/master/storage/font-operator-mono/data.zip"
     name 'Operator Mono'
     homepage 'https://github.com/zacs/homebrew-personal'
   

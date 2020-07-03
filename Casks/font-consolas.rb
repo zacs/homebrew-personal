@@ -2,7 +2,7 @@ cask 'font-consolas' do
     version :latest
     sha256 :no_check
   
-    url "https://raw.githubusercontent.com/zacs/homebrew-personal/master/storage/font-consolas/Consolas.zip"
+    url "https://raw.githubusercontent.com/zacs/homebrew-personal/master/storage/font-consolas/data.zip"
     name 'Consolas'
     homepage 'https://github.com/zacs/homebrew-personal'
   
